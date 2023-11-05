@@ -24,13 +24,13 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
     ports:
       - "8080:8080"
-    command: ["java", "-jar", "your-app.jar"]
+    command: [ "java", "-jar", "your-app.jar" ]
 
   liquibase:
     image: liquibase/liquibase:latest
     depends_on:
       - db
-    command: ["--url=jdbc:postgresql://db:5432/postgres", "--changeLogFile=changelog-master.xml", "update"] # Updated database name to "postgres"
+    command: [ "--url=jdbc:postgresql://db:5432/postgres", "--changeLogFile=changelog-master.xml", "update" ] # Updated database name to "postgres"
     volumes:
       - ./liquibase:/liquibase/changelog
     environment:

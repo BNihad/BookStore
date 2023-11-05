@@ -1,14 +1,13 @@
 package com.task.BookStore.services;
 
-import com.task.BookStore.Dao.BookEntity;
-import com.task.BookStore.Dao.StudentsEntity;
+import com.task.BookStore.models.BookEntity;
+import com.task.BookStore.models.StudentsEntity;
 import com.task.BookStore.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
-import java.util.*;
+import java.util.List;
 
 @Service
 public class BookService {
@@ -33,7 +32,7 @@ public class BookService {
     }
 
     public List<StudentsEntity> getReadersForBook(Long bookId) {
-        // Assuming you have a Book entity with a reference to students who are reading it.
+
         BookEntity book = bookRepository.findById(bookId).orElse(null);
 
         if (book == null) {

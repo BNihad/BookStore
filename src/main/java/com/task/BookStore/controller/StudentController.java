@@ -1,17 +1,15 @@
 package com.task.BookStore.controller;
 
-import com.task.BookStore.Dao.BookEntity;
-import com.task.BookStore.Dao.StudentsEntity;
+import com.task.BookStore.models.BookEntity;
+import com.task.BookStore.models.StudentsEntity;
 import com.task.BookStore.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/students")
@@ -43,15 +41,23 @@ public class StudentController {
 
 
     @PutMapping("/{studentId}/add-book/{bookId}")
-    public StudentsEntity addBookToReadingList(@PathVariable Long studentId, @PathVariable Long bookId) {
-        StudentsEntity student = studentService.addBookToReadingList(studentId, bookId);
+    public ResponseEntity<?> addBookToReadingList(@PathVariable Long studentId, @PathVariable Long bookId, Principal principal) {
+        String loggedInUsername = principal.getName(); // Get the username of the currently logged-in user
+        ResponseEntity<?> student = studentService.addBookToReadingList(studentId, bookId, loggedInUsername);
         return student;
     }
+
 
 
     @GetMapping("/reading-list")
     public ResponseEntity<List<BookEntity>> getReadingListForStudent(@RequestParam Long studentId) {
         List<BookEntity> readingList = studentService.getReadingList(studentId);
         return new ResponseEntity<>(readingList, HttpStatus.OK);
+    }
+
+    @GetMapping("/test")
+    public String test() {
+
+        return "test passed";
     }
 }

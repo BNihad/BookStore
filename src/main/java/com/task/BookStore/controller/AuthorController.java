@@ -1,14 +1,11 @@
 package com.task.BookStore.controller;
 
-import com.task.BookStore.Dao.AuthorEntity;
+import com.task.BookStore.models.AuthorEntity;
 import com.task.BookStore.services.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/authors")

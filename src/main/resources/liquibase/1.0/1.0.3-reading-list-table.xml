@@ -19,9 +19,11 @@
     <!-- Add foreign key constraints for the reading_list table -->
     <changeSet id="reading-list-table-keys" author="BNihad">
         <addForeignKeyConstraint baseTableName="reading_list" baseColumnNames="student_id"
-                                 constraintName="FK_ReadingList_Student" referencedTableName="student" referencedColumnNames="id"/>
+                                 constraintName="FK_ReadingList_Student" referencedTableName="student"
+                                 referencedColumnNames="id"/>
 
         <addForeignKeyConstraint baseTableName="reading_list" baseColumnNames="book_id"
-                                 constraintName="FK_ReadingList_Book" referencedTableName="book" referencedColumnNames="id"/>
+                                 constraintName="FK_ReadingList_Book" referencedTableName="book"
+                                 referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>

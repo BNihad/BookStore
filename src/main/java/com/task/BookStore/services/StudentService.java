@@ -1,15 +1,16 @@
 package com.task.BookStore.services;
 
-import com.task.BookStore.Dao.BookEntity;
-import com.task.BookStore.Dao.StudentsEntity;
+import com.task.BookStore.models.BookEntity;
+import com.task.BookStore.models.StudentsEntity;
 import com.task.BookStore.repository.BookRepository;
 import com.task.BookStore.repository.StudentRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 
 @Service
 public class StudentService {
@@ -36,17 +37,19 @@ public class StudentService {
     }
 
 
-    public StudentsEntity addBookToReadingList(Long studentId, Long bookId) {
+    public ResponseEntity<?> addBookToReadingList(Long studentId, Long bookId, String loggedInUsername) {
         StudentsEntity student = studentRepository.findById(studentId).orElse(null);
         BookEntity book = bookRepository.findById(bookId).orElse(null);
 
-        if (student != null && book != null) {
+        if (student != null && book != null && student.getName().equals(loggedInUsername)) {
             student.getReadingList().add(book);
             studentRepository.save(student);
+            return ResponseEntity.ok(student);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied: You are not authorized to modify this student's reading list.");
         }
-
-        return student;
     }
+
 
 
     public List<BookEntity> getReadingList(Long studentId) {
