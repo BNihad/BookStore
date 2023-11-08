@@ -50,11 +50,22 @@ public class SecurityConfig {
                                 .requestMatchers("/api/auth/**").permitAll() // Public endpoints for registration and login
 
 
-                                .requestMatchers("/books/**").hasAuthority("ROLE_AUTHOR") //Usually We need to contain ADMIN but for now just AUTHOR. AUTHOR IS ADMIN FOR NOW
-                                .requestMatchers("/students/**").hasAuthority("ROLE_STUDENT")
+
+                                .requestMatchers("/authors/{id}").hasAuthority("ROLE_ADMIN")
+
+                                .requestMatchers("/students/add-book").hasAuthority("ROLE_STUDENT")
+
+                                .requestMatchers("/students/subscribe-to-author").hasAuthority("ROLE_STUDENT")
+                                .requestMatchers("/students/unsubscribe-from-author").hasAuthority("ROLE_STUDENT")
+                                .requestMatchers("/students/subscribed-authors").hasAuthority("ROLE_STUDENT")
+                                .requestMatchers("/students/reading-list").hasAuthority("ROLE_STUDENT")
+                                .requestMatchers("/students/test").hasAuthority("ROLE_STUDENT")
+
+                                .requestMatchers("/books/readers").permitAll()
+                                .requestMatchers("/books/books").hasAnyRole("AUTHOR","ADMIN")
+                                .requestMatchers("/books/{name}").hasAnyRole("AUTHOR","ADMIN")
 
 
-                                .requestMatchers("/authors/**").hasAuthority("ROLE_AUTHOR")
 
 
                 )

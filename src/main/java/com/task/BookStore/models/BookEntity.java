@@ -18,11 +18,13 @@ import java.util.List;
 public class BookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
     private String name;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
+    @JsonIgnore
     private AuthorEntity author;
 
     @ManyToMany(mappedBy = "readingList")

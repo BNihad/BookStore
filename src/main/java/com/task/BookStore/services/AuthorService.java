@@ -2,6 +2,7 @@ package com.task.BookStore.services;
 
 import com.task.BookStore.models.AuthorEntity;
 import com.task.BookStore.repository.AuthorRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +28,10 @@ public class AuthorService {
 
     public void deleteAuthor(Long id) {
         authorRepository.deleteById(id);
+    }
+
+    public AuthorEntity getAuthorById(Long id) {
+        return authorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Author not found with ID: " + id));
     }
 }

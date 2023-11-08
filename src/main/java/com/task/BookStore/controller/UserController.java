@@ -1,7 +1,7 @@
 package com.task.BookStore.controller;
 
 import com.task.BookStore.filter.JwtUtil;
-import com.task.BookStore.models.LoginRequest;
+import com.task.BookStore.models.payload.LoginPayload;
 import com.task.BookStore.models.user.UserEntity;
 import com.task.BookStore.repository.RoleRepository;
 import com.task.BookStore.services.user.UserService;
@@ -35,7 +35,7 @@ public class UserController {
     @PostMapping("/register/student")
     public ResponseEntity<UserEntity> registerStudent(@RequestBody UserEntity user) {
         user.setRoles(Collections.singleton(roleRepository.findByName("STUDENT")));
-        UserEntity registeredUser = userService.registerUser(user);
+        UserEntity registeredUser = userService.registerStudent(user);
         return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
     }
 
@@ -46,8 +46,16 @@ public class UserController {
         return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
     }
 
+    @PostMapping("/register/admin")
+    public ResponseEntity<UserEntity> registerAdmin(@RequestBody UserEntity user) {
+        user.setRoles(Collections.singleton(roleRepository.findByName("ADMIN")));
+        UserEntity registeredUser = userService.registerAdmin(user);
+        return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+    }
+
+
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginRequest user) {
+    public ResponseEntity<String> loginUser(@RequestBody LoginPayload user) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);

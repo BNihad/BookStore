@@ -5,8 +5,10 @@ import com.task.BookStore.models.StudentsEntity;
 import com.task.BookStore.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -16,32 +18,36 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
+
     @GetMapping
     public List<BookEntity> getAllBooks() {
         return bookService.getAllBooks();
     }
 
-    @PostMapping
-    public BookEntity createBook(@RequestBody BookEntity book) {
-        return bookService.createBook(book);
+
+    @PostMapping("/books")
+    public BookEntity createBook(@RequestBody BookEntity book, Principal principal) {
+        String loggedInUsername = principal.getName();
+        BookEntity createdBook = bookService.createBook(book, loggedInUsername);
+        return createdBook;
     }
-
-    @PutMapping("/{id}")
-    public BookEntity updateBook(@PathVariable Long id, @RequestBody BookEntity book) {
-        book.setId(id);
-        return bookService.updateBook(book);
+    @PutMapping("/{name}")
+    public ResponseEntity<BookEntity> updateBookByName(
+            @PathVariable String name, @RequestBody BookEntity updatedBook, Principal principal) {
+        String loggedInUsername = principal.getName(); // Get the username of the currently logged-in user
+        BookEntity updated = bookService.updateBookByName(name, updatedBook, loggedInUsername);
+        return ResponseEntity.ok(updated);
     }
-
-
-    @DeleteMapping("/{id}")
-    public void deleteBook(@PathVariable Long id) {
-        bookService.deleteBook(id);
+    @DeleteMapping("/{name}")
+    public void deleteBookByName(@PathVariable String name, Principal principal) {
+        String loggedInUsername = principal.getName(); // Get the username of the currently logged-in user
+        bookService.deleteBookByName(name, loggedInUsername);
     }
 
     // BookController.java
-    @GetMapping("/{bookId}/readers")
-    public ResponseEntity<List<StudentsEntity>> getReadersForBook(@PathVariable Long bookId) {
-        List<StudentsEntity> readers = bookService.getReadersForBook(bookId);
+    @GetMapping("/readers")
+    public ResponseEntity<List<StudentsEntity>> getReadersForBook(@RequestParam String bookName) {
+        List<StudentsEntity> readers = bookService.getReadersForBook(bookName);
 
         if (readers.isEmpty()) {
             return ResponseEntity.noContent().build();

@@ -1,6 +1,7 @@
 package com.task.BookStore.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.task.BookStore.models.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class AuthorEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
     private String name;
     private int age;
@@ -27,6 +29,11 @@ public class AuthorEntity {
     @OneToMany(mappedBy = "author")
     @JsonIgnore
     private List<BookEntity> authoredBooks;
+
+    @OneToOne
+    @JsonIgnore
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
 
 }

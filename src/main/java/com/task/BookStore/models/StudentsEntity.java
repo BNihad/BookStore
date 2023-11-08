@@ -1,6 +1,7 @@
 package com.task.BookStore.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.task.BookStore.models.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +19,8 @@ import java.util.List;
 public class StudentsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
+
     private Long id;
     private String name;
     private int age;
@@ -31,6 +34,11 @@ public class StudentsEntity {
 
     @JsonIgnore
     private List<BookEntity> readingList;
+
+    @OneToOne
+    @JsonIgnore
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
 
 }

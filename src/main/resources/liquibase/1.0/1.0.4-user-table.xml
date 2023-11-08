@@ -18,6 +18,7 @@
             <column name="email" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="age" type="INT"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
